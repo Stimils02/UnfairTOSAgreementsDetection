@@ -8,7 +8,8 @@
 #SBATCH --cpus-per-task=4
 #SBATCH --partition=gpu
 
-module load anaconda
-conda activate your_env_name
+source /home/njuttu_umass_edu/venvs/torch_env/bin/activate
+cd /home/njuttu_umass_edu/685/ZeroShotAnomolyDetection/Zero_shot 
 
+export OPENAI_API_KEY="RQ9xqvwX_H9elDWqNqkwRcfqN61fOpWfzFjuwDSJqc6D9eoiWqu8ZZETLMEw5y4jC05MdVhL3KT3BlbkFJVnLKRTjI6gVQWOLsKbr5-ECNPuxXCPLQfmCTLWSR56VGNh25eUYysl95F0TU7xKNJqCtUcSJ4A" 
 python run_zeroshot.py

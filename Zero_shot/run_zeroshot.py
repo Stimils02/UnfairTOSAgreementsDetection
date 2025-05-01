@@ -33,8 +33,11 @@ Choose the most suitable category from:
 # ------------------------------
 # Query OpenAI GPT-3.5
 # ------------------------------
+
+import os
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 def query_gpt(prompt, model="gpt-3.5-turbo"):
-    openai.api_key = "RQ9xqvwX_H9elDWqNqkwRcfqN61fOpWfzFjuwDSJqc6D9eoiWqu8ZZETLMEw5y4jC05MdVhL3KT3BlbkFJVnLKRTjI6gVQWOLsKbr5-ECNPuxXCPLQfmCTLWSR56VGNh25eUYysl95F0TU7xKNJqCtUcSJ4A"  # Use env variable in practice
     response = openai.ChatCompletion.create(
         model=model,
         messages=[{"role": "user", "content": prompt}],
