@@ -1,74 +1,59 @@
-# ------------------------------
-# Unified Zero-Shot Runner (LegalNLP)
-# ------------------------------
-import json
 import openai
-from sklearn.metrics import f1_score
+import pandas as pd
 from tqdm import tqdm
 
-# ------------------------------
-# Load LexGLUE data from local JSONL
-# ------------------------------
-def load_local_lexglue_jsonl(path):
-    data = []
-    with open(path, "r") as f:
-        for line in f:
-            data.append(json.loads(line))
-    return data
+# ========== CONFIGURATION ==========
+# Load dataset
+DATASET_PATH = "hf://datasets/LawInformedAI/claudette_tos/data/train-00000-of-00001-a8de7efe0da36666.parquet"
+SAMPLE_SIZE = 50  # To avoid high costs — increase if needed
+MODEL_NAME = "gpt-4"  # or "gpt-3.5-turbo" for cheaper cost
+OPENAI_API_KEY = "your-api-key-here"  # Replace with your actual API key
+OUTPUT_CSV = "zero_shot_results.csv"
 
-# ------------------------------
-# Construct zero-shot prompt
-# ------------------------------
-def make_zeroshot_prompt(text, labels):
-    label_list = "\n".join([f"{i+1}. {label}" for i, label in enumerate(labels)])
-    return f"""
-You are a legal expert. Categorize the text below:
+# ========== SETUP ==========
+openai.api_key = OPENAI_API_KEY
 
-{text}
+# Load dataset
+print(f"Loading dataset from {DATASET_PATH}...")
+df = pd.read_parquet(DATASET_PATH)
+sample_df = df.sample(SAMPLE_SIZE, random_state=42).reset_index(drop=True)
 
-Choose the most suitable category from:
-{label_list}
-"""
+# ========== PROMPT FUNCTION ==========
+def create_prompt(clause_text):
+    return f"""You are a legal expert. Given the following clause from a Terms of Service document, determine if it is likely **unfair** or **fair** to a user under EU consumer law.
 
-# ------------------------------
-# Query OpenAI GPT-3.5
-# ------------------------------
+Clause:
+\"\"\"{clause_text}\"\"\"
 
-import os
-openai.api_key = os.getenv("OPENAI_API_KEY")
+Respond with one word only: "unfair" or "fair".
 
-def query_gpt(prompt, model="gpt-3.5-turbo"):
-    response = openai.ChatCompletion.create(
-        model=model,
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0
-    )
-    return response.choices[0].message["content"].strip()
+Answer:"""
 
-# ------------------------------
-# Evaluate using F1 Score
-# ------------------------------
-def evaluate(true_labels, predicted_labels):
-    return f1_score(true_labels, predicted_labels, average="micro")
+# ========== ZERO-SHOT INFERENCE ==========
+results = []
+print(f"Running zero-shot classification with {MODEL_NAME}...")
 
-# ------------------------------
-# Main Zero-Shot Evaluation Loop
-# ------------------------------
-def run_zero_shot(jsonl_path, num_examples=50):
-    dataset = load_local_lexglue_jsonl(jsonl_path)
-    label_set = sorted(list({label for ex in dataset for label in ex["options"]}))
+for i, row in tqdm(sample_df.iterrows(), total=len(sample_df)):
+    clause = row["text"]
 
-    true_labels = []
-    pred_labels = []
+    try:
+        response = openai.ChatCompletion.create(
+            model=MODEL_NAME,
+            messages=[{"role": "user", "content": create_prompt(clause)}],
+            temperature=0,
+            max_tokens=1
+        )
+        label = response['choices'][0]['message']['content'].strip().lower()
+    except Exception as e:
+        label = "error"
+        print(f"[!] Error on row {i}: {e}")
 
-    for ex in tqdm(dataset[:num_examples]):
-        prompt = make_zeroshot_prompt(ex["input"], label_set)
-        response = query_gpt(prompt)
-        pred_labels.append(response)
-        true_labels.append(ex["label"])
+    results.append({
+        "original_text": clause,
+        "predicted_label": label
+    })
 
-    score = evaluate(true_labels, pred_labels)
-    print("Zero-shot GPT micro-F1:", score)
-
-if __name__ == "__main__":
-    run_zero_shot("lex-glue/eurlex/test.jsonl")
+# ========== SAVE RESULTS ==========
+output_df = pd.DataFrame(results)
+output_df.to_csv(OUTPUT_CSV, index=False)
+print(f"Results saved to: {OUTPUT_CSV}")
