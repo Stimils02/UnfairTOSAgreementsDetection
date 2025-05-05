@@ -11,7 +11,7 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, TaskType
 from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 import transformers
-# ✅ Check transformers version at runtime
+# Check transformers version at runtime
 print("Transformers version:", transformers.__version__)
 from transformers import TrainingArguments
 print("TrainingArguments path:", TrainingArguments.__module__)
@@ -34,7 +34,7 @@ model_name = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 tokenizer.pad_token = tokenizer.eos_token
 
-# ✅ Set quantization config
+#Set quantization config
 bnb_config = BitsAndBytesConfig(
     load_in_4bit=True,
     bnb_4bit_compute_dtype=torch.float16,
@@ -90,15 +90,17 @@ def compute_metrics(eval_preds):
     precision, recall, f1, _ = precision_recall_fscore_support(true_labels, pred_labels, average="binary")
     return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
-# Training arguments
+# Training arguments - FIXED VERSION
 training_args = TrainingArguments(
     output_dir="./lora-tinyllama",
     per_device_train_batch_size=2,
     gradient_accumulation_steps=4,
     num_train_epochs=3,
     learning_rate=2e-4,
-    evaluation_strategy="epoch",
-    save_strategy="epoch",
+    # Use eval_steps instead of evaluation_strategy
+    eval_steps=500,
+    # Use save_steps instead of save_strategy
+    save_steps=500,
     logging_steps=10,
     report_to="none",
     fp16=True

@@ -6,8 +6,8 @@ ds = load_dataset("LawInformedAI/claudette_tos")
 df = pd.DataFrame(ds["train"])
 
 # Balance the dataset
-anomalous = df[df['label'] == 1].sample(n=50, random_state=42)
-normal = df[df['label'] == 0].sample(n=50, random_state=42)
+anomalous = df[df['label'] == 1].sample(n=1000, random_state=42)
+normal = df[df['label'] == 0].sample(n=1000, random_state=42)
 balanced_df = pd.concat([anomalous, normal]).sample(frac=1, random_state=42).reset_index(drop=True)
 
 # Split

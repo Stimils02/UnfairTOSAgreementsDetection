@@ -1,0 +1,103 @@
+Running fine-tuning...
+Transformers version: 4.51.3
+TrainingArguments path: transformers.training_args
+{'loss': 12.6421, 'grad_norm': 52.62828826904297, 'learning_rate': 0.0001666666666666667, 'epoch': 1.0}
+{'loss': 4.8001, 'grad_norm': 23.93962860107422, 'learning_rate': 0.00010666666666666667, 'epoch': 2.0}
+{'loss': 1.876, 'grad_norm': 7.700453281402588, 'learning_rate': 4e-05, 'epoch': 3.0}
+{'train_runtime': 95.7331, 'train_samples_per_second': 2.507, 'train_steps_per_second': 0.313, 'train_loss': 6.439410400390625, 'epoch': 3.0}
+Evaluation check:
+Loaded validation dataset with 1920 examples
+Loading adapter from: ./lora-tinyllama/checkpoint-30
+Evaluating examples...
+Example 0:
+  Text: in order to access and use our services , you agree to these terms of service , which incorporate by...
+  True label: 1 (Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'yes , this is an'
+
+Example 1:
+  Text: 5.5 as part of this continuing innovation , you acknowledge and agree that youtube may stop -lrb- pe...
+  True label: 1 (Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'Yes, it is.'
+
+Example 2:
+  Text: if you are the parent or legal guardian of a child under the age of 13 -lrb- the `` parent '' -rrb- ...
+  True label: 0 (Not Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'yes, it is anom'
+
+Example 3:
+  Text: parental control functionalities offered by nintendo may not work with third-party services ....
+  True label: 0 (Not Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'yes, the clause states'
+
+Example 4:
+  Text: you are responsible for providing all equipment required to access the internet or enable communicat...
+  True label: 0 (Not Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'yes, it is anom'
+
+Example 5:
+  Text: all documents and information disclosed in the course of the arbitration shall be kept strictly conf...
+  True label: 0 (Not Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'Yes, this clause is'
+
+Example 6:
+  Text: you agree that oculus and its affiliates shall be able to use the feedback in any way it may choose ...
+  True label: 0 (Not Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'yes, it is anom'
+
+Example 7:
+  Text: in such event , supercell shall not be required to provide refunds , benefits or other compensation ...
+  True label: 1 (Anomalous)
+  Prediction: 0 (Not Anomalous)
+  Full response: 'no , this clause is'
+
+Example 8:
+  Text: vimeo reserves the right to modify the vimeo service ....
+  True label: 1 (Anomalous)
+  Prediction: 1 (Anomalous)
+  Full response: 'Yes, it is anom'
+
+Example 9:
+  Text: the arbitrator 's decision will include the essential findings and conclusions upon which the arbitr...
+  True label: 0 (Not Anomalous)
+  Prediction: 0 (Not Anomalous)
+  Full response: 'the arbitrator 's'
+
+Prediction distribution: 1392 anomalous, 528 not anomalous
+True label distribution: 960 anomalous, 960 not anomalous
+
+=== EVALUATION RESULTS ===
+Accuracy: 0.5177
+Precision: 0.5122
+Recall: 0.7427
+F1 Score: 0.6063
+
+Confusion Matrix:
+[[281 679]
+ [247 713]]
+
+Detailed Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.53      0.29      0.38       960
+           1       0.51      0.74      0.61       960
+
+    accuracy                           0.52      1920
+   macro avg       0.52      0.52      0.49      1920
+weighted avg       0.52      0.52      0.49      1920
+
+
+Prediction Analysis:
+True Positives: 713
+False Positives: 679
+True Negatives: 281
+False Negatives: 247
+
+Results saved to evaluation_results.csv
+Confusion matrix visualization saved to confusion_matrix.png
