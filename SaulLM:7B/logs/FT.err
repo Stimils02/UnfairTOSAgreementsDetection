@@ -1,0 +1,22 @@
+Map:   0%|          | 0/80 [00:00<?, ? examples/s]Map: 100%|██████████| 80/80 [00:00<00:00, 2333.93 examples/s]
+Map:   0%|          | 0/1920 [00:00<?, ? examples/s]Map:  67%|██████▋   | 1288/1920 [00:00<00:00, 12744.58 examples/s]Map: 100%|██████████| 1920/1920 [00:00<00:00, 9604.84 examples/s] 
+Loading checkpoint shards:   0%|          | 0/6 [00:00<?, ?it/s]Loading checkpoint shards:  17%|█▋        | 1/6 [00:14<01:12, 14.47s/it]Loading checkpoint shards:  33%|███▎      | 2/6 [00:32<01:06, 16.55s/it]Loading checkpoint shards:  50%|█████     | 3/6 [00:53<00:55, 18.65s/it]Loading checkpoint shards:  67%|██████▋   | 4/6 [01:09<00:35, 17.53s/it]Loading checkpoint shards:  83%|████████▎ | 5/6 [01:25<00:16, 16.83s/it]Loading checkpoint shards: 100%|██████████| 6/6 [01:39<00:00, 15.98s/it]Loading checkpoint shards: 100%|██████████| 6/6 [01:39<00:00, 16.56s/it]
+Map:   0%|          | 0/80 [00:00<?, ? examples/s]Map:  88%|████████▊ | 70/80 [00:00<00:00, 688.47 examples/s]Map: 100%|██████████| 80/80 [00:00<00:00, 455.29 examples/s]
+Map:   0%|          | 0/1920 [00:00<?, ? examples/s]Map:   6%|▌         | 112/1920 [00:00<00:01, 1106.95 examples/s]Map:  12%|█▏        | 233/1920 [00:00<00:01, 1160.31 examples/s]Map:  18%|█▊        | 352/1920 [00:00<00:01, 1162.55 examples/s]Map:  24%|██▍       | 469/1920 [00:00<00:01, 1163.05 examples/s]Map:  33%|███▎      | 642/1920 [00:00<00:01, 1155.96 examples/s]Map:  39%|███▉      | 758/1920 [00:00<00:01, 1153.20 examples/s]Map:  46%|████▌     | 874/1920 [00:00<00:00, 1151.60 examples/s]Map:  52%|█████▏    | 992/1920 [00:00<00:00, 1157.96 examples/s]Map:  58%|█████▊    | 1118/1920 [00:01<00:00, 949.45 examples/s]Map:  65%|██████▍   | 1239/1920 [00:01<00:00, 1013.73 examples/s]Map:  71%|███████   | 1358/1920 [00:01<00:00, 1057.73 examples/s]Map:  77%|███████▋  | 1476/1920 [00:01<00:00, 1087.76 examples/s]Map:  83%|████████▎ | 1593/1920 [00:01<00:00, 1108.85 examples/s]Map:  89%|████████▉ | 1713/1920 [00:01<00:00, 1131.40 examples/s]Map:  95%|█████████▌| 1832/1920 [00:01<00:00, 1146.32 examples/s]Map: 100%|██████████| 1920/1920 [00:01<00:00, 1055.80 examples/s]
+/home/njuttu_umass_edu/685/ZeroShotAnomolyDetection/SaulLM:7B/run_finetune.py:154: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `CustomTrainer.__init__`. Use `processing_class` instead.
+  trainer = CustomTrainer(
+No label_names provided for model class `PeftModelForCausalLM`. Since `PeftModel` hides base models input arguments, if label_names is not given, label_names can't be set automatically within `Trainer`. Note that empty label_names list will be used instead.
+  0%|          | 0/20 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/home/njuttu_umass_edu/685/ZeroShotAnomolyDetection/SaulLM:7B/run_finetune.py", line 164, in <module>
+    trainer.train()
+  File "/home/njuttu_umass_edu/venvs/torch311_env/lib/python3.11/site-packages/transformers/trainer.py", line 2245, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/njuttu_umass_edu/venvs/torch311_env/lib/python3.11/site-packages/transformers/trainer.py", line 2560, in _inner_training_loop
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/njuttu_umass_edu/venvs/torch311_env/lib/python3.11/site-packages/transformers/trainer.py", line 3736, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: CustomTrainer.compute_loss() got an unexpected keyword argument 'num_items_in_batch'
+  0%|          | 0/20 [00:00<?, ?it/s]
