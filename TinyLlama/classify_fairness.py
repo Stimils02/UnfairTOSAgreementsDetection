@@ -52,7 +52,8 @@ adapter_path = "/home/njuttu_umass_edu/685/ZeroShotAnomolyDetection/TinyLlama/lo
 model = PeftModel.from_pretrained(model, adapter_path)
 
 # ======= Prepare DataLoader =======
-dataset = ClauseDataset(df['clause'].tolist(), tokenizer)
+dataset = ClauseDataset(df['terms_content'].tolist(), tokenizer)
+
 dataloader = DataLoader(dataset, batch_size=1)
 
 # ======= Run Inference =======
